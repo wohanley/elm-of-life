@@ -40,7 +40,14 @@ stepCell row column grid =
     |> liveOrDie
 
 getNeighbours : Int -> Int -> Grid -> [CellState]
-getNeighbours row column grid = [] -- ???
+getNeighbours row column grid = 
+
+-- Hahahaha I actually have no idea how to get from a list
+get : Int -> [a] -> a
+get index xs =
+  if index == 0
+  then head xs
+  else get (index - 1) (tail xs)
 
 liveOrDie : Int -> CellState
 liveOrDie livingNeighbours =
