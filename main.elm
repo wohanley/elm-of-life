@@ -73,4 +73,5 @@ tailIndexedMap : (Int -> a -> b) -> Int -> [a] -> [b]
 tailIndexedMap f fromIndex xs =
     case xs of
       [] -> []
-      head::tail -> (f fromIndex head) :: (tailIndexedMap f (fromIndex + 1) tail)
+      head::tail -> (f fromIndex head) ::
+            (tailIndexedMap f (fromIndex + 1) tail)
