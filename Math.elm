@@ -1,12 +1,9 @@
-module Math
-( max
-, min
-) where
+module Math where
 
-max : Number -> Number -> Number
+max : Int -> Int -> Int
 max = compare (>)
 
-min : Number -> Number -> Number
+min : Int -> Int -> Int
 min = compare (<)
 
 compare : (a -> a -> Bool) -> a -> a -> a

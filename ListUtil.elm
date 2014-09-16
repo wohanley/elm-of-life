@@ -1,8 +1,6 @@
-module ListUtil
-( get
-, range
-, indexedMap
-) where
+module ListUtil where
+
+import Batteries as Batt
 
 range : Int -> Int -> [Int]
 range from to = tailRange from to []
@@ -13,12 +11,14 @@ tailRange from to list =
     then list
     else from :: (tailRange (from + 1) to list)
 
--- Hahahaha I actually have no idea how to get from a list
 get : Int -> [a] -> a
 get index xs =
     if index == 0
     then head xs
     else get (index - 1) (tail xs)
+
+getAll : [Int] -> [a] -> [a]
+getAll indices xs = map ((Batt.flip get) xs) indices
 
 indexedMap : (Int -> a -> b) -> [a] -> [b]
 indexedMap f xs = tailIndexedMap f 0 xs
