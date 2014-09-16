@@ -43,7 +43,7 @@ stepCell row column grid =
         |> liveOrDie
 
 getNeighbours : Int -> Int -> Grid -> [CellState]
-getNeighbours maxRow maxColumn row column grid =
+getNeighbours row column grid =
     let rowCount = length grid
         colCount = length (LU.get 0 grid)
     in
