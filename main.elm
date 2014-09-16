@@ -1,5 +1,6 @@
 import ListUtil as LU
 import Math
+import Random
 
 type CellState = Bool
 type Row = [CellState]
@@ -13,7 +14,8 @@ gameState = foldp (\_ -> \gameState -> step gameState) (generateGrid 30 30) (eve
 
 generateGrid : Int -> Int -> Grid
 generateGrid rows cols =
-    repeat rows (repeat cols True)
+    let randomBool = if Random.float < 0.5 then False else True
+    in repeat rows (repeat cols )
 
 -- Display
 
