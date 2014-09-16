@@ -5,8 +5,11 @@ type CellState = Bool
 type Row = [CellState]
 type Grid = [[CellState]]
 
-main : Element
-main = renderGrid (generateGrid 30 30)
+main : Signal Element
+main = renderGrid <~ gameState
+
+gameState : Signal Grid
+gameState = foldp (\_ -> \gameState -> step gameState) (generateGrid 30 30) (every second)
 
 generateGrid : Int -> Int -> Grid
 generateGrid rows cols =
@@ -37,10 +40,11 @@ step grid = LU.indexedMap
 
 stepCell : Int -> Int -> Grid -> CellState
 stepCell row column grid =
-    (getNeighbours row column grid)
+    let cell = LU.get column (LU.get row grid)
+    in (getNeighbours row column grid)
         |> filter (\cell -> cell)
         |> length
-        |> liveOrDie
+        |> liveOrDie cell
 
 getNeighbours : Int -> Int -> Grid -> [CellState]
 getNeighbours row column grid =
@@ -55,13 +59,17 @@ getNeighbours row column grid =
 bound : Int -> Int -> [Int]
 bound max index =
     let lower = Math.max 0 (index - 1)
-        upper = Math.min max (index + 1)
+        upper = Math.min max (index + 2)
     in
         LU.range lower upper
 
-liveOrDie : Int -> CellState
-liveOrDie livingNeighbours =
-    case livingNeighbours of
-      2 -> True
-      3 -> True
-      _ -> False
+liveOrDie : CellState -> Int -> CellState
+liveOrDie alive livingNeighbours =
+    case alive of
+      True -> case livingNeighbours of
+                2 -> True
+                3 -> True
+                _ -> False
+      False -> case livingNeighbours of
+                 3 -> True
+                 _ -> False
