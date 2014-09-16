@@ -44,8 +44,14 @@ stepCell row column grid =
 
 getNeighbours : Int -> Int -> Int -> Int -> Grid -> [CellState]
 getNeighbours maxRow maxColumn row column grid =
-    let bound max index = LU.range (Math.max 0 index) (Math.min bound index)
-    in map (map LU.get (bound maxRow row)) grid
+    map (LU.getAll (bound maxColumn column)) (LU.getAll (bound maxRow row))
+
+bound : Int -> Int -> [Int]
+bound max index =
+    let lower = Math.max 0 (index - 1)
+        upper = Math.min max (index + 1)
+    in
+        LU.range lower upper
 
 liveOrDie : Int -> CellState
 liveOrDie livingNeighbours =
