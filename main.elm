@@ -42,9 +42,15 @@ stepCell row column grid =
         |> length
         |> liveOrDie
 
-getNeighbours : Int -> Int -> Int -> Int -> Grid -> [CellState]
+getNeighbours : Int -> Int -> Grid -> [CellState]
 getNeighbours maxRow maxColumn row column grid =
-    map (LU.getAll (bound maxColumn column)) (LU.getAll (bound maxRow row))
+    let rowCount = length grid
+        colCount = length (LU.get 0 grid)
+    in
+        grid
+            |> LU.getAll (bound maxRow row)
+            |> map (LU.getAll (bound maxColumn column))
+            |> LU.flatten
 
 bound : Int -> Int -> [Int]
 bound max index =
