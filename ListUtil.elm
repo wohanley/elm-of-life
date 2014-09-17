@@ -20,6 +20,15 @@ get index xs =
 getAll : [Int] -> [a] -> [a]
 getAll indices xs = map ((Batt.flip get) xs) indices
 
+remove : Int -> [a] -> [a]
+remove index list =
+    case list of
+      [] -> []
+      head::tail ->
+          if index == 0
+          then tail
+          else head :: (remove (index - 1) tail)
+
 flatten : [[a]] -> [a]
 flatten lists = foldl (++) [] lists
 
