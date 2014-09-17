@@ -1,21 +1,20 @@
+module Conway where
+
 import ListUtil as LU
 import Math
-import Random
 
 type CellState = Bool
 type Row = [CellState]
 type Grid = [[CellState]]
 
+-- Dealing with randomness purely is disgusting
+port initialBoard: [[Bool]] -- aka Grid
+
 main : Signal Element
 main = renderGrid <~ gameState
 
 gameState : Signal Grid
-gameState = foldp (\_ -> \gameState -> step gameState) (generateGrid 30 30) (every second)
-
-generateGrid : Int -> Int -> Grid
-generateGrid rows cols =
-    let randomBool = if Random.float < 0.5 then False else True
-    in repeat rows (repeat cols )
+gameState = foldp (\_ -> step) initialBoard (every second)
 
 -- Display
 
