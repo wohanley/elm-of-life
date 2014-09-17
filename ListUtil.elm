@@ -21,14 +21,7 @@ getAll : [Int] -> [a] -> [a]
 getAll indices xs = map ((Batt.flip get) xs) indices
 
 flatten : [[a]] -> [a]
-flatten = tailFlatten []
-
-tailFlatten : [a] -> [[a]] -> [a]
-tailFlatten base lists =
-    case lists of
-      [] -> base
-      headList::tailLists -> let newBase = base ++ headList
-                             in  newBase ++ (tailFlatten newBase tailLists)    
+flatten lists = foldl (++) [] lists
 
 indexedMap : (Int -> a -> b) -> [a] -> [b]
 indexedMap f xs = tailIndexedMap f 0 xs
