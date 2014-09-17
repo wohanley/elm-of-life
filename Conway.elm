@@ -10,7 +10,7 @@ type Grid = [[CellState]]
 -- Dealing with randomness purely is disgusting
 port initialBoard: [[Bool]] -- aka Grid
 
---main : Element
+main : Signal Element
 main = renderGrid <~ gameState
 
 gameState : Signal Grid
