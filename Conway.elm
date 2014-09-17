@@ -10,7 +10,7 @@ type Grid = [[CellState]]
 -- Dealing with randomness purely is disgusting
 port initialBoard: [[Bool]] -- aka Grid
 
-main : Signal Element
+--main : Element
 main = renderGrid <~ gameState
 
 gameState : Signal Grid
@@ -41,7 +41,7 @@ step grid = LU.indexedMap
 
 stepCell : Int -> Int -> Grid -> CellState
 stepCell row column grid =
-    let cell = LU.get column (LU.get row grid)
+    let cell = LU.get row grid |> LU.get column
     in (getNeighbours row column grid)
         |> filter (\cell -> cell)
         |> length
@@ -53,16 +53,17 @@ getNeighbours row column grid =
         colCount = length (LU.get 0 grid)
     in
         grid
-            |> LU.getAll (bound rowCount row)
-            |> map (LU.getAll (bound colCount column))
+            |> LU.getAll (bound (rowCount - 1) row)
+            |> map (LU.getAll (bound (colCount - 1) column))
             |> LU.flatten
+            |> LU.remove 4
 
 bound : Int -> Int -> [Int]
 bound max index =
     let lower = Math.max 0 (index - 1)
-        upper = Math.min max (index + 2)
+        upper = Math.min max (index + 1)
     in
-        LU.range lower upper
+        LU.range lower (upper + 1)
 
 liveOrDie : CellState -> Int -> CellState
 liveOrDie alive livingNeighbours =
