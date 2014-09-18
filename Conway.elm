@@ -54,9 +54,11 @@ getNeighbours row column grid =
     in
         grid
             |> LU.getAll (bound (rowCount - 1) row)
-            |> map (LU.getAll (bound (colCount - 1) column))
+            |> zipWith (<|)
+                   [(LU.getAll (bound (colCount - 1) column)),
+                    (LU.getAll (outerBound (colCount - 1) column)),
+                    (LU.getAll (bound (colCount - 1) column))]
             |> LU.flatten
-            |> LU.remove 4
 
 bound : Int -> Int -> [Int]
 bound max index =
@@ -64,6 +66,9 @@ bound max index =
         upper = Math.min max (index + 1)
     in
         LU.range lower (upper + 1)
+
+outerBound : Int -> Int -> [Int]
+outerBound max index = bound max index |> LU.remove index
 
 liveOrDie : CellState -> Int -> CellState
 liveOrDie alive livingNeighbours =
