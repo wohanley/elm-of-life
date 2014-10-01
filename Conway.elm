@@ -80,3 +80,9 @@ liveOrDie alive livingNeighbours =
       False -> case livingNeighbours of
                  3 -> True
                  _ -> False
+
+
+-- Interaction
+
+toggleCellState : CellState -> CellState
+toggleCellState alive = not alive
