@@ -11,6 +11,16 @@ tailRange from to list =
     then list
     else from :: (tailRange (from + 1) to list)
 
+set : a -> Int -> [a] -> [a]
+set element index list =
+    if index == 0
+    then element :: (tail list)
+    else (head list) :: (set element (index - 1) (tail list))
+
+set2d : a -> Int -> Int -> [[a]] -> [[a]]
+set2d element listIndex index lists =
+    set (set element index (get listIndex lists)) listIndex lists
+
 get : Int -> [a] -> a
 get index xs =
     if index == 0
